@@ -144,10 +144,8 @@ function CardHeader({ icon, title }: { icon: React.ReactNode; title: string }) {
                     {title}
                 </span>
             </div>
-            {/* Arrow out icon */}
-            <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                <path d="M2.5 10.5L10.5 2.5M10.5 2.5H5.5M10.5 2.5V7.5" stroke="var(--color-text-muted)" strokeWidth="1.4" strokeLinecap="round" />
-            </svg>
+
+
         </div>
     );
 }
@@ -162,16 +160,21 @@ function StatCard({
     style,
     scale = 1,
     x = 0,
+    initialX,
+    initialY = 18,
 }: {
     children: React.ReactNode;
     delay?: number;
     style?: React.CSSProperties;
     scale?: number;
     x?: string | number;
+    initialX?: string | number;
+    initialY?: string | number;
 }) {
+    const startX = initialX !== undefined ? initialX : x;
     return (
         <motion.div
-            initial={{ opacity: 0, y: 18, x, scale: scale * 0.97 }}
+            initial={{ opacity: 0, y: initialY, x: startX, scale: scale * 0.97 }}
             animate={{ opacity: 1, y: 0, x, scale: scale }}
             transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
             style={{
@@ -208,6 +211,8 @@ function RevenueCard() {
         <StatCard
             delay={0.3}
             scale={0.88}
+            initialX={-100}
+            initialY={0}
             style={{
                 top: "22%",
                 right: "80%",
@@ -247,13 +252,19 @@ function RevenueCard() {
                                 <stop offset="100%" stopColor="var(--color-accent-blue, #0B2B3C)" stopOpacity="0" />
                             </linearGradient>
 
+                            {/* Gradient for the main wave line */}
+                            <linearGradient id="wave-line-gradient" x1="0" y1="0" x2="1" y2="0">
+                                <stop offset="0%" stopColor="rgba(11, 43, 60, 0.1)" />
+                                <stop offset="100%" stopColor="var(--color-accent-blue, #0B2B3C)" />
+                            </linearGradient>
+
                             {/* Clip path that grows to reveal the chart */}
                             <clipPath id="chart-wipe">
                                 <rect
                                     x="0" y="-10"
                                     width={`${chartWidth}%`}
                                     height="120%"
-                                    style={{ transition: "width 1.5s cubic-bezier(0.25, 1, 0.5, 1)" }}
+                                    style={{ transition: "width 4.5s cubic-bezier(0.25, 1, 0.5, 1)" }}
                                 />
                             </clipPath>
                         </defs>
@@ -270,7 +281,7 @@ function RevenueCard() {
                             <path
                                 d="M 5 50 C 15 40, 25 50, 35 45 C 45 40, 55 20, 65 20 C 75 20, 85 40, 95 30 C 105 20, 110 15, 115 10"
                                 fill="none"
-                                stroke="var(--color-accent-blue, #0B2B3C)"
+                                stroke="url(#wave-line-gradient)"
                                 strokeWidth="3.5"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
@@ -329,7 +340,7 @@ function ReservationsCard() {
                 clearInterval(interval);
                 return prev;
             });
-        }, 80); // 80ms delay between each bar animating in
+        }, 240); // 240ms delay between each bar animating in
 
         return () => clearInterval(interval);
     }, []);
@@ -338,6 +349,8 @@ function ReservationsCard() {
         <StatCard
             delay={0.45}
             scale={0.88}
+            initialX={-100}
+            initialY={100}
             style={{
                 top: "45%",
                 left: "-6%",
@@ -428,7 +441,7 @@ function ReservationsCard() {
                             width: "12px",
                             opacity: isVisible ? 1 : 0,
                             transform: `translateY(${isVisible ? "0px" : "10px"})`,
-                            transition: "all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)"
+                            transition: "all 1.8s cubic-bezier(0.34, 1.56, 0.64, 1)"
                         }}>
                             {/* Top Dot */}
                             <div style={{
@@ -450,7 +463,7 @@ function ReservationsCard() {
                                     : "#F0EFE9",
                                 transformOrigin: "bottom",
                                 transform: `scaleY(${isVisible ? 1 : 0})`,
-                                transition: "transform 0.8s cubic-bezier(0.25, 1, 0.5, 1)"
+                                transition: "transform 2.4s cubic-bezier(0.25, 1, 0.5, 1)"
                             }} />
 
                             {/* Bottom Dot */}
@@ -508,6 +521,8 @@ function OccupancyCard() {
             delay={0.55}
             scale={0.9}
             x="-50%"
+            initialX="-50%"
+            initialY={100}
             style={{
                 top: "40%",
                 left: "50%",
@@ -592,6 +607,12 @@ function OccupancyCard() {
                     height="100%"
                     style={{ position: "absolute", inset: 0, zIndex: -1, overflow: "visible" }}
                 >
+                    <defs>
+                        <linearGradient id="pill-gradient" x1="0" y1="0" x2="1" y2="0">
+                            <stop offset="0%" stopColor="rgba(11, 43, 60, 0.1)" />
+                            <stop offset="100%" stopColor="var(--color-accent-blue, #0B2B3C)" />
+                        </linearGradient>
+                    </defs>
                     {/* Background Track */}
                     <rect
                         x="4" y="4"
@@ -610,14 +631,14 @@ function OccupancyCard() {
                         height="calc(100% - 8px)"
                         rx="36"
                         fill="none"
-                        stroke="var(--color-accent-blue)"
+                        stroke="url(#pill-gradient)"
                         strokeWidth="8"
                         strokeLinecap="round"
                         pathLength="100" // Normalizes the path length logic
                         strokeDasharray="100"
                         strokeDashoffset={progressOffset}
                         style={{
-                            transition: "stroke-dashoffset 1.5s cubic-bezier(0.25, 1, 0.5, 1)",
+                            transition: "stroke-dashoffset 4.5s cubic-bezier(0.25, 1, 0.5, 1)",
                         }}
                     />
                 </svg>
@@ -655,10 +676,21 @@ function OccupancyCard() {
 }
 
 function GuestSatisfactionCard() {
+    const [barWidth, setBarWidth] = useState(0);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setBarWidth(85);
+        }, 150);
+        return () => clearTimeout(timer);
+    }, []);
+
     return (
         <StatCard
             delay={0.35}
             scale={0.88}
+            initialX={100}
+            initialY={0}
             style={{ top: "22%", right: "-12%", width: "285px", height: "140px" }}
         >
             <CardHeader
@@ -705,9 +737,10 @@ function GuestSatisfactionCard() {
                     <div
                         style={{
                             height: "100%",
-                            width: "85%",
-                            background: "var(--color-accent-blue)",
+                            width: `${barWidth}%`,
+                            background: "linear-gradient(to right, rgba(11, 43, 60, 0.1) 0%, var(--color-accent-blue) 100%)",
                             borderRadius: "99px",
+                            transition: "width 4.5s cubic-bezier(0.25, 1, 0.5, 1)"
                         }}
                     />
                 </div>
@@ -739,6 +772,8 @@ function HousekeepingCard() {
         <StatCard
             delay={0.5}
             scale={0.88}
+            initialX={100}
+            initialY={100}
             style={{
                 top: "45%",
                 right: "-6%",
@@ -808,6 +843,12 @@ function HousekeepingCard() {
                 {/* SVG Animated Arc Graphics */}
                 <div style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: "180px", height: "90px" }}>
                     <svg width="100%" height="100%" viewBox="0 0 200 100" style={{ overflow: "visible" }}>
+                        <defs>
+                            <linearGradient id="arc-gradient" x1="0" y1="0" x2="1" y2="0">
+                                <stop offset="0%" stopColor="rgba(11, 43, 60, 0.1)" />
+                                <stop offset="100%" stopColor="var(--color-accent-blue, #0B2B3C)" />
+                            </linearGradient>
+                        </defs>
                         {/* Background Dotted Arc */}
                         <path
                             d="M 10 100 A 90 90 0 0 1 190 100"
@@ -822,14 +863,14 @@ function HousekeepingCard() {
                         <path
                             d="M 10 100 A 90 90 0 0 1 190 100"
                             fill="none"
-                            stroke="var(--color-accent-blue, #0B2B3C)"
+                            stroke="url(#arc-gradient)"
                             strokeWidth="8"
                             strokeLinecap="round"
                             pathLength="100" // Maps exactly to a 0-100 percentage scale
                             strokeDasharray="100"
                             strokeDashoffset={arcOffset}
                             style={{
-                                transition: "stroke-dashoffset 1.5s cubic-bezier(0.25, 1, 0.5, 1)"
+                                transition: "stroke-dashoffset 4.5s cubic-bezier(0.25, 1, 0.5, 1)"
                             }}
                         />
                     </svg>
@@ -861,9 +902,9 @@ function HousekeepingCard() {
                         style={{
                             height: "100%",
                             width: `${barWidth}%`, // Animated via state
-                            background: "var(--color-accent-blue, #0B2B3C)",
+                            background: "linear-gradient(to right, rgba(11, 43, 60, 0.1) 0%, var(--color-accent-blue, #0B2B3C) 100%)",
                             borderRadius: "99px",
-                            transition: "width 1.5s cubic-bezier(0.25, 1, 0.5, 1)" // Matches the arc timing
+                            transition: "width 4.5s cubic-bezier(0.25, 1, 0.5, 1)" // Matches the arc timing
                         }}
                     />
                 </div>

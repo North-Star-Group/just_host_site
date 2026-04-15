@@ -25,6 +25,44 @@ const navData = [
         ],
     },
     {
+        name: "Pricing",
+        columns: [
+            {
+                title: "Core",
+                items: [
+                    { name: "Modules", href: "/modules", description: "Explore the core system features" },
+                    { name: "How it works", href: "/how-it-works", description: "Understand the underlying architecture" },
+                ],
+            },
+            {
+                title: "Ecosystem",
+                items: [
+                    { name: "Integrations", href: "/integrations", description: "Connect with your existing stack" },
+                    { name: "Pricing", href: "/pricing", description: "Transparent plans for all sizes" },
+                ],
+            },
+        ],
+    },
+    {
+        name: "Features",
+        columns: [
+            {
+                title: "Core",
+                items: [
+                    { name: "Modules", href: "/modules", description: "Explore the core system features" },
+                    { name: "How it works", href: "/how-it-works", description: "Understand the underlying architecture" },
+                ],
+            },
+            {
+                title: "Ecosystem",
+                items: [
+                    { name: "Integrations", href: "/integrations", description: "Connect with your existing stack" },
+                    { name: "Pricing", href: "/pricing", description: "Transparent plans for all sizes" },
+                ],
+            },
+        ],
+    },
+    {
         name: "Customers",
         columns: [
             {
@@ -67,18 +105,14 @@ export default function Navbar() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     return (
-        <nav className="fixed top-0 left-0 right-0 z-50 text-black border-b border-white/10">
+        <nav className="fixed top-0 left-0 right-0 z-50 text-black bg-[var(--color-cream)] border-b border-white/10">
             <div className="max-w-7xl mx-auto px-6 lg:px-8">
                 <div className="flex items-center justify-between h-20">
 
                     {/* Logo */}
                     <div className="flex-shrink-0">
-                        <Link href="/" className="flex items-center gap-2 group">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="transform group-hover:rotate-90 transition-transform duration-500">
-                                {/* Adjusted stroke to match the text-black theme you have on the top level */}
-                                <path d="M12 2L12 22M2 12L22 12M4.92893 4.92893L19.0711 19.0711M4.92893 19.0711L19.0711 4.92893" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                            </svg>
-                            <span className="font-semibold text-xl tracking-wide">BRAND</span>
+                        <Link href="/" className="flex items-center">
+                            <img src="/just_host.svg" alt="Just Host Logo" className="h-14 w-auto -ml-3" />
                         </Link>
                     </div>
 
@@ -89,9 +123,23 @@ export default function Navbar() {
                                 <button
                                     key={item.name}
                                     onMouseEnter={() => setHoveredItem(item.name)}
-                                    className="text-sm font-medium transition-colors hover:text-black/70 px-4 py-2 rounded-full focus:outline-none"
+                                    className="flex items-center gap-2.5 text-sm font-medium transition-colors hover:text-black/70 px-4 py-2 rounded-full focus:outline-none"
                                 >
                                     {item.name}
+                                    <svg
+                                        className={`w-3.5 h-3.5 transition-transform duration-200 ${hoveredItem === item.name ? "rotate-180" : ""
+                                            }`}
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M19 9l-7 7-7-7"
+                                        />
+                                    </svg>
                                 </button>
                             ))}
                         </div>
@@ -147,7 +195,7 @@ export default function Navbar() {
                             <motion.button
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
-                                className="bg-[#FDF8F1] text-[#00283F] px-6 py-2.5 rounded-full text-sm font-semibold transition-colors hover:bg-main hover:text-sec shadow-sm"
+                                className="bg-[var(--color-primary)] text-sec px-6 py-2.5 rounded-full text-sm font-semibold transition-colors hover:bg-main hover:text-sec shadow-sm"
                             >
                                 Schedule a demo
                             </motion.button>
@@ -212,7 +260,7 @@ export default function Navbar() {
                             ))}
                             <div className="pt-6 border-t border-white/10">
                                 <Link href="/demo" onClick={() => setMobileMenuOpen(false)}>
-                                    <div className="w-full bg-[#FDF8F1] text-[#00283F] px-6 py-3 rounded-full text-sm font-semibold text-center">
+                                    <div className="w-full bg-[var(--color-primary)] text-sec px-6 py-3 rounded-full text-sm font-semibold text-center">
                                         Schedule a demo
                                     </div>
                                 </Link>
