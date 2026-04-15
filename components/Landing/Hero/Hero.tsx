@@ -928,7 +928,7 @@ export default function Hero() {
 
             {/* TOP CONTENT */}
             <div className="flex-shrink-0 pt-6 pb-2 text-center z-10 w-full px-4 translate-y-10 md:translate-y-14">
-                <h1 className="text-4xl md:text-6xl font-extrabold mb-2 text-[var(--color-text-heading)] leading-tight">
+                <h1 className="text-4xl md:text-6xl font-extrabold mb-2 text-[var(--color-primary-light)] leading-tight">
                     JustHost an AI-powered <br />  Operating system for hotels.
                 </h1>
 
