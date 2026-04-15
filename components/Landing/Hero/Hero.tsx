@@ -123,9 +123,7 @@ function TimerArcIcon({ min = 12, sec = 12 }: { min?: number; sec?: number }) {
     );
 }
 
-/* ────────────────────────────────────────────
-   Reusable card header row
-   ──────────────────────────────────────────── */
+
 
 function CardHeader({ icon, title }: { icon: React.ReactNode; title: string }) {
     return (
@@ -134,11 +132,11 @@ function CardHeader({ icon, title }: { icon: React.ReactNode; title: string }) {
                 <span style={{ color: "var(--color-accent-blue)", display: "flex" }}>{icon}</span>
                 <span
                     style={{
-                        fontSize: "11px",
+                        fontSize: "14px",
                         fontWeight: 600,
-                        color: "var(--color-text-muted)",
-                        letterSpacing: "0.04em",
-                        textTransform: "uppercase",
+                        color: "",
+                        letterSpacing: "0.01em",
+                        textTransform: "normal",
                     }}
                 >
                     {title}
@@ -177,6 +175,7 @@ function StatCard({
             initial={{ opacity: 0, y: initialY, x: startX, scale: scale * 0.97 }}
             animate={{ opacity: 1, y: 0, x, scale: scale }}
             transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
+            whileHover={{ y: -8, transition: { duration: 0.3 } }}
             style={{
                 position: "absolute",
                 zIndex: 10,
