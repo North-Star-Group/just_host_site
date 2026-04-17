@@ -1,11 +1,10 @@
-"use client";
+"use client"
+
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
 
-/* ────────────────────────────────────────────
-   Shared glass card style
-   ──────────────────────────────────────────── */
+
 
 const glassStyle: React.CSSProperties = {
     background: "rgba(255, 255, 255, 0.82)",
@@ -16,115 +15,6 @@ const glassStyle: React.CSSProperties = {
         "0 8px 32px rgba(13,31,45,0.12), 0 1.5px 4px rgba(13,31,45,0.06)",
     borderRadius: "16px",
 };
-
-/* ────────────────────────────────────────────
-   Tiny inline SVG components for chart icons
-   ──────────────────────────────────────────── */
-
-function TrendLineIcon() {
-    return (
-        <svg width="100%" height="40" viewBox="0 0 120 40" fill="none" preserveAspectRatio="none">
-            <polyline
-                points="0,36 20,22 40,28 60,12 80,16 100,6 120,2"
-                stroke="var(--color-accent-blue)"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                fill="none"
-            />
-            {/* Gradient fill under line */}
-            <defs>
-                <linearGradient id="trendFill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="var(--color-accent-blue)" stopOpacity="0.18" />
-                    <stop offset="100%" stopColor="var(--color-accent-blue)" stopOpacity="0" />
-                </linearGradient>
-            </defs>
-            <polygon
-                points="0,36 20,22 40,28 60,12 80,16 100,6 120,2 120,40 0,40"
-                fill="url(#trendFill)"
-            />
-        </svg>
-    );
-}
-
-function BarChartIcon() {
-    const bars = [28, 18, 34, 22, 38, 26, 40, 30];
-    return (
-        <svg width="100%" height="50" viewBox="0 0 104 50" fill="none">
-            {bars.map((h, i) => (
-                <rect
-                    key={i}
-                    x={i * 13 + 2}
-                    y={50 - h}
-                    width="9"
-                    height={h}
-                    rx="2.5"
-                    fill={i === bars.length - 1 ? "var(--color-accent-blue)" : "#D1E3F8"}
-                />
-            ))}
-        </svg>
-    );
-}
-
-function DonutIcon({ pct = 73 }: { pct?: number }) {
-    const r = 38;
-    const circ = 2 * Math.PI * r;
-    const dash = (pct / 100) * circ;
-    return (
-        <svg width="100" height="100" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r={r} strokeWidth="11" stroke="#EBF2FA" fill="none" />
-            <circle
-                cx="50"
-                cy="50"
-                r={r}
-                strokeWidth="11"
-                stroke="var(--color-accent-blue)"
-                fill="none"
-                strokeDasharray={`${dash} ${circ - dash}`}
-                strokeLinecap="round"
-                transform="rotate(-90 50 50)"
-            />
-            <text x="50" y="55" textAnchor="middle" fontSize="14" fontWeight="700" fill="var(--color-text-heading)">
-                {pct}%
-            </text>
-        </svg>
-    );
-}
-
-function TimerArcIcon({ min = 12, sec = 12 }: { min?: number; sec?: number }) {
-    const pct = (min * 60 + sec) / (20 * 60);
-    const r = 30;
-    const circ = 2 * Math.PI * r;
-    const dash = pct * circ;
-    return (
-        <svg width="80" height="80" viewBox="0 0 80 80">
-            <circle cx="40" cy="40" r={r} strokeWidth="8" stroke="#EBF2FA" fill="none" />
-            <circle
-                cx="40"
-                cy="40"
-                r={r}
-                strokeWidth="8"
-                stroke="var(--color-accent-blue)"
-                fill="none"
-                strokeDasharray={`${dash} ${circ - dash}`}
-                strokeLinecap="round"
-                transform="rotate(-90 40 40)"
-            />
-            {/* tick marks */}
-            {[0, 25, 50, 75].map((p, i) => {
-                const angle = (p / 100) * 2 * Math.PI - Math.PI / 2;
-                const x1 = 40 + (r - 6) * Math.cos(angle);
-                const y1 = 40 + (r - 6) * Math.sin(angle);
-                const x2 = 40 + (r + 2) * Math.cos(angle);
-                const y2 = 40 + (r + 2) * Math.sin(angle);
-                return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#D1E3F8" strokeWidth="2" />;
-            })}
-        </svg>
-    );
-}
-
-
-
 function CardHeader({ icon, title }: { icon: React.ReactNode; title: string }) {
     return (
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px" }}>
@@ -134,7 +24,7 @@ function CardHeader({ icon, title }: { icon: React.ReactNode; title: string }) {
                     style={{
                         fontSize: "14px",
                         fontWeight: 600,
-                        color: "",
+                        color: "var(--color-text-heading)",
                         letterSpacing: "0.01em",
                         textTransform: "normal",
                     }}
@@ -148,9 +38,9 @@ function CardHeader({ icon, title }: { icon: React.ReactNode; title: string }) {
     );
 }
 
-/* ────────────────────────────────────────────
-   StatCard glass wrapper
-   ──────────────────────────────────────────── */
+const ROTATING_WORDS = ["hotels", "hostels", "boutiques", "real estate"];
+
+
 
 function StatCard({
     children,
@@ -158,24 +48,19 @@ function StatCard({
     style,
     scale = 1,
     x = 0,
-    initialX,
-    initialY = 18,
 }: {
     children: React.ReactNode;
     delay?: number;
     style?: React.CSSProperties;
     scale?: number;
     x?: string | number;
-    initialX?: string | number;
-    initialY?: string | number;
 }) {
-    const startX = initialX !== undefined ? initialX : x;
     return (
         <motion.div
-            initial={{ opacity: 0, y: initialY, x: startX, scale: scale * 0.97 }}
+            initial={{ opacity: 0, y: 30, x, scale: scale * 0.96 }}
             animate={{ opacity: 1, y: 0, x, scale: scale }}
-            transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
-            whileHover={{ y: -8, transition: { duration: 0.3 } }}
+            transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
+            whileHover={{ y: -8, transition: { duration: 0.3, ease: "easeOut" } }}
             style={{
                 position: "absolute",
                 zIndex: 10,
@@ -189,16 +74,14 @@ function StatCard({
     );
 }
 
-/* ────────────────────────────────────────────
-   Five Dashboard Cards
-   ──────────────────────────────────────────── */
+
 
 function RevenueCard() {
-    // State to handle the wipe-in animation of the chart
+
     const [chartWidth, setChartWidth] = useState(0);
 
     useEffect(() => {
-        // Trigger the animation shortly after mount
+
         const timer = setTimeout(() => {
             setChartWidth(100);
         }, 150);
@@ -208,10 +91,8 @@ function RevenueCard() {
 
     return (
         <StatCard
-            delay={0.3}
+            delay={1.2}
             scale={0.88}
-            initialX={-100}
-            initialY={0}
             style={{
                 top: "22%",
                 right: "80%",
@@ -327,35 +208,33 @@ function RevenueCard() {
 }
 
 function ReservationsCard() {
-    // State to handle the sequential animation of the 9 bars
+
     const [visibleBars, setVisibleBars] = useState(0);
     const totalBars = 9;
 
     useEffect(() => {
-        // Stagger the appearance of each bar
+
         const interval = setInterval(() => {
             setVisibleBars((prev) => {
                 if (prev < totalBars) return prev + 1;
                 clearInterval(interval);
                 return prev;
             });
-        }, 240); // 240ms delay between each bar animating in
+        }, 240);
 
         return () => clearInterval(interval);
     }, []);
 
     return (
         <StatCard
-            delay={0.45}
+            delay={1.35}
             scale={0.88}
-            initialX={-100}
-            initialY={100}
             style={{
                 top: "45%",
                 left: "-6%",
                 transformOrigin: "center left",
                 minWidth: "340px",
-                height: "280px", // Strict dimension maintained
+                height: "280px",
                 display: "flex",
                 flexDirection: "column"
             }}
@@ -399,7 +278,7 @@ function ReservationsCard() {
             {/* Legend Row */}
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
                 {[
-                    // Adjusted colors to match the dark dots vs light dot in the image
+
                     { color: "var(--color-accent-blue, #0B2B3C)", label: "VIP: 12" },
                     { color: "var(--color-accent-blue, #0B2B3C)", label: "Regular: 42" },
                     { color: "#E4E3DD", label: "Corporate: 10" },
@@ -428,7 +307,7 @@ function ReservationsCard() {
                 marginBottom: "8px"
             }}>
                 {Array.from({ length: totalBars }).map((_, index) => {
-                    const isActive = index === 3; // The 4th bar is the active gradient one
+                    const isActive = index === 3;
                     const isVisible = index < visibleBars;
 
                     return (
@@ -456,7 +335,7 @@ function ReservationsCard() {
                                 flex: 1,
                                 width: "6px",
                                 borderRadius: "99px",
-                                // Active state gets the gradient, inactive gets the cream background
+
                                 background: isActive
                                     ? "linear-gradient(to bottom, var(--color-accent-blue, #0B2B3C) 0%, rgba(11, 43, 60, 0.1) 100%)"
                                     : "#F0EFE9",
@@ -487,7 +366,7 @@ function ReservationsCard() {
                 color: "var(--color-text-muted)",
                 opacity: 0.6,
                 letterSpacing: "0.5px",
-                marginTop: "auto" // Pushes axis to the bottom
+                marginTop: "auto"
             }}>
                 <span style={{ fontSize: "8px" }}>|</span>
                 <span style={{ fontSize: "8px", opacity: 0.3 }}>|</span>
@@ -503,11 +382,11 @@ function ReservationsCard() {
     );
 }
 function OccupancyCard() {
-    // Start at 100 (completely empty) and transition to 27 (100 - 73) for 73% filled
+
     const [progressOffset, setProgressOffset] = useState(100);
 
     useEffect(() => {
-        // Triggers the animation right after the component mounts
+
         const timer = setTimeout(() => {
             setProgressOffset(100 - 73);
         }, 150);
@@ -517,17 +396,15 @@ function OccupancyCard() {
 
     return (
         <StatCard
-            delay={0.55}
+            delay={1.5}
             scale={0.9}
             x="-50%"
-            initialX="-50%"
-            initialY={100}
             style={{
                 top: "40%",
                 left: "50%",
                 transformOrigin: "bottom center",
                 minWidth: "400px",
-                height: "320px" // Maintained original dimension
+                height: "320px"
             }}
         >
             {/* Top Row: Header & Arrow */}
@@ -592,13 +469,13 @@ function OccupancyCard() {
             <div style={{
                 position: "relative",
                 width: "100%",
-                height: "80px", // Maintained original dimension
+                height: "80px",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
                 marginBottom: "20px",
-                zIndex: 1 // Ensures text stays above SVG
+                zIndex: 1
             }}>
                 {/* SVG Animated Pill Progress */}
                 <svg
@@ -617,9 +494,9 @@ function OccupancyCard() {
                         x="4" y="4"
                         width="calc(100% - 8px)"
                         height="calc(100% - 8px)"
-                        rx="36" // Radius calculated to create a perfect pill shape within the 80px height bounds
+                        rx="36"
                         fill="none"
-                        stroke="#F0EFE9" // Fallback muted cream color
+                        stroke="#F0EFE9"
                         strokeWidth="8"
                     />
 
@@ -633,7 +510,7 @@ function OccupancyCard() {
                         stroke="url(#pill-gradient)"
                         strokeWidth="8"
                         strokeLinecap="round"
-                        pathLength="100" // Normalizes the path length logic
+                        pathLength="100"
                         strokeDasharray="100"
                         strokeDashoffset={progressOffset}
                         style={{
@@ -686,10 +563,8 @@ function GuestSatisfactionCard() {
 
     return (
         <StatCard
-            delay={0.35}
+            delay={1.65}
             scale={0.88}
-            initialX={100}
-            initialY={0}
             style={{ top: "22%", right: "-12%", width: "285px", height: "140px" }}
         >
             <CardHeader
@@ -754,14 +629,14 @@ function GuestSatisfactionCard() {
 }
 
 function HousekeepingCard() {
-    // We animate both the arc and the bottom progress bar
+
     const [arcOffset, setArcOffset] = useState(100);
     const [barWidth, setBarWidth] = useState(0);
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            setArcOffset(100 - 80); // Arc fills to roughly 80% (12:12 out of 15 mins)
-            setBarWidth(80);        // Bottom bar fills to 80%
+            setArcOffset(100 - 80);
+            setBarWidth(80);
         }, 150);
 
         return () => clearTimeout(timer);
@@ -769,10 +644,8 @@ function HousekeepingCard() {
 
     return (
         <StatCard
-            delay={0.5}
+            delay={1.8}
             scale={0.88}
-            initialX={100}
-            initialY={100}
             style={{
                 top: "45%",
                 right: "-6%",
@@ -852,10 +725,10 @@ function HousekeepingCard() {
                         <path
                             d="M 10 100 A 90 90 0 0 1 190 100"
                             fill="none"
-                            stroke="#E4E3DD" // Light muted cream/grey to match the image
+                            stroke="#E4E3DD"
                             strokeWidth="8"
                             strokeLinecap="round"
-                            strokeDasharray="2 8" // Creates the dotted effect seen in the screenshot
+                            strokeDasharray="2 8"
                         />
 
                         {/* Foreground Animated Solid Arc */}
@@ -865,7 +738,7 @@ function HousekeepingCard() {
                             stroke="url(#arc-gradient)"
                             strokeWidth="8"
                             strokeLinecap="round"
-                            pathLength="100" // Maps exactly to a 0-100 percentage scale
+                            pathLength="100"
                             strokeDasharray="100"
                             strokeDashoffset={arcOffset}
                             style={{
@@ -900,10 +773,10 @@ function HousekeepingCard() {
                     <div
                         style={{
                             height: "100%",
-                            width: `${barWidth}%`, // Animated via state
+                            width: `${barWidth}%`,
                             background: "linear-gradient(to right, rgba(11, 43, 60, 0.1) 0%, var(--color-accent-blue, #0B2B3C) 100%)",
                             borderRadius: "99px",
-                            transition: "width 4.5s cubic-bezier(0.25, 1, 0.5, 1)" // Matches the arc timing
+                            transition: "width 4.5s cubic-bezier(0.25, 1, 0.5, 1)"
                         }}
                     />
                 </div>
@@ -911,11 +784,42 @@ function HousekeepingCard() {
         </StatCard>
     );
 }
-/* ────────────────────────────────────────────
-   Main Hero
-   ──────────────────────────────────────────── */
+
 
 export default function Hero() {
+    const { scrollY } = useScroll();
+    const rawScale = useTransform(scrollY, [0, 500], [1, 1.1]);
+    const smoothScale = useSpring(rawScale, { stiffness: 100, damping: 30, restDelta: 0.001 });
+
+    const mouseX = useMotionValue(0);
+    const mouseY = useMotionValue(0);
+
+    const [index, setIndex] = useState(0);
+
+
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setIndex((prev) => (prev + 1) % ROTATING_WORDS.length);
+        }, 2500);
+        return () => clearInterval(interval);
+    }, []);
+
+    useEffect(() => {
+        const handleMouseMove = (e: MouseEvent) => {
+            const { innerWidth, innerHeight } = window;
+            const x = e.clientX - innerWidth / 2;
+            const y = e.clientY - innerHeight / 2;
+            mouseX.set(x / 50);
+            mouseY.set(y / 50);
+        };
+        window.addEventListener("mousemove", handleMouseMove);
+        return () => window.removeEventListener("mousemove", handleMouseMove);
+    }, [mouseX, mouseY]);
+
+    const springX = useSpring(mouseX, { stiffness: 50, damping: 20 });
+    const springY = useSpring(mouseY, { stiffness: 50, damping: 20 });
+
     return (
         <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[var(--color-cream)] font-inter">
 
@@ -925,15 +829,42 @@ export default function Hero() {
                 style={{ background: "radial-gradient(circle at center, rgba(0,40,63,0.06), transparent 70%)" }}
             />
 
-            {/* TOP CONTENT */}
             <div className="flex-shrink-0 pt-6 pb-2 text-center z-10 w-full px-4 translate-y-10 md:translate-y-14">
-                <h1 className="text-4xl md:text-6xl font-extrabold mb-2 text-[var(--color-primary-light)] leading-tight">
-                    JustHost an AI-powered <br />  Operating system for hotels.
-                </h1>
 
-                <p className="text-base md:text-xl  mx-auto text-[var(--color-text-muted)]">
+                <motion.h1
+                    initial={{ opacity: 0, y: -30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className="text-4xl md:text-6xl font-extrabold mb-2 text-[var(--color-primary-light)] leading-tight"
+                >
+                    JustHost an AI-powered <br /> Operating system for {" "}
+
+
+                    <span className="inline-flex flex-col h-[1.25em] overflow-hidden align-bottom">
+                        <AnimatePresence mode="popLayout">
+                            <motion.span
+                                key={index}
+                                initial={{ y: 40, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: -40, opacity: 0 }}
+                                transition={{ duration: 0.7, ease: "easeInOut" }}
+                                className="block text-[var(--color-primary-light)]"
+                            >
+                                {ROTATING_WORDS[index]}
+                            </motion.span>
+                        </AnimatePresence>
+                    </span>.
+                </motion.h1>
+
+                <motion.p
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+                    className="text-base md:text-xl mx-auto text-[var(--color-text-muted)]"
+                >
                     Streamline operations, boost revenue, and delight guests — all from one intuitive platform.
-                </p>
+                </motion.p>
+
             </div>
 
             {/* HERO IMAGE */}
@@ -941,17 +872,32 @@ export default function Hero() {
 
                 <div className="relative w-full max-w-[1000px] mx-auto">
 
-                    <Image
-                        src="/hotel_blue.png"
-                        alt="Hotel"
-                        width={1400}
-                        height={800}
-                        priority
-                        className="object-contain w-full h-auto mx-auto"
-                        style={{
-                            transform: "scale(1.52) translateY(-10px)",
-                        }}
-                    />
+                    <motion.div style={{ scale: smoothScale }}>
+                        <motion.div
+                            initial={{ opacity: 0, y: 40, scale: 0.96 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{ duration: 1.2, ease: "easeOut" }}
+                        >
+                            <motion.div style={{ x: springX, y: springY }}>
+                                <motion.div
+                                    animate={{ y: [0, -10, 0] }}
+                                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1.2 }}
+                                >
+                                    <Image
+                                        src="/hotel_blue.png"
+                                        alt="Hotel"
+                                        width={1400}
+                                        height={800}
+                                        priority
+                                        className="object-contain w-full h-auto mx-auto pointer-events-none"
+                                        style={{
+                                            transform: "scale(1.52) translateY(-10px)",
+                                        }}
+                                    />
+                                </motion.div>
+                            </motion.div>
+                        </motion.div>
+                    </motion.div>
 
                     <RevenueCard />
                     <ReservationsCard />

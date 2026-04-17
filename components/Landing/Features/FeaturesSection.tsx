@@ -1,140 +1,149 @@
 "use client";
 
-import React, { useRef } from "react";
-import Image from "next/image";
-import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Smartphone, CalendarDays, BarChart3, Database } from "lucide-react";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { MessageSquare, Smartphone, Zap, Blocks } from "lucide-react";
+import WhatsAppCard from "./Cards/WhatsappCard";
+import OperationsCard from "./Cards/OperationsCard";
+import FinanceAdminCard from "./Cards/FinanceAdminCard";
+import DecisionEngineCard from "./Cards/IntegrationsCard";
 
 const features = [
     {
-        id: 1,
-        title: "From reservation to room, seamlessly.",
-        description: "Our intuitive platform makes it easy to manage bookings, update availability, and adapt to guest needs in real-time.",
-        image: "/test.png",
-        icon: <CalendarDays className="w-8 h-8 text-[#00283F]" />
+        id: "guest-inbox",
+        tabTitle: "Guest Inbox",
+        icon: MessageSquare,
+        title: "Unify every guest message in one dashboard.",
+        description: "ARTURO captures requests from Gmail and WhatsApp, then centralizes conversations so your team can reply faster without channel switching.",
+        customComponent: <WhatsAppCard />,
     },
     {
-        id: 2,
-        title: "Modern by design.",
-        description: "Replace clunky legacy systems with a beautiful mobile experience. Empower guests with digital keys and mobile check-in.",
-        image: "/test.png",
-        icon: <Smartphone className="w-8 h-8 text-[#00283F]" />
+        id: "operations",
+        tabTitle: "Operations",
+        icon: Smartphone,
+        title: "Delegate tasks instantly to the right staff.",
+        description: "From housekeeping to maintenance, ARTURO routes work to the right teammate with live timers and clear ownership.",
+        customComponent: <OperationsCard />,
     },
     {
-        id: 3,
-        title: "Automate what slows you down.",
-        description: "Create sophisticated workflows for housekeeping and maintenance to prevent delays, eliminate busywork, and delight guests.",
-        image: "/test.png",
-        icon: <BarChart3 className="w-8 h-8 text-[#00283F]" />
+        id: "finance-admin",
+        tabTitle: "Finance & Admin",
+        icon: Zap,
+        title: "Run finance workflows from invoice to forecast.",
+        description: "Automate invoicing, reconcile accounting data, track vendor expenses, and monitor forward-looking RevPAR performance in one place.",
+        customComponent: <FinanceAdminCard />,
     },
     {
-        id: 4,
-        title: "Connect and manage your data.",
-        description: "Integrate seamlessly with your existing PMS, channel managers, payment gateways, and accounting software.",
-        image: "/test.png",
-        icon: <Database className="w-8 h-8 text-[#00283F]" />
+        id: "decision-engine",
+        tabTitle: "Decision Engine",
+        icon: Blocks,
+        title: "Automate routine decisions with human control.",
+        description: "Route each request through automatic, suggested, or escalated paths so routine work is handled instantly and critical cases stay supervised.",
+        customComponent: <DecisionEngineCard />,
     }
 ];
 
 export default function FeaturesSection() {
-    const scrollRef = useRef<HTMLDivElement>(null);
+    const [activeTabId, setActiveTabId] = useState(features[0].id);
 
-    const scroll = (direction: "left" | "right") => {
-        if (scrollRef.current) {
-            const { scrollLeft, clientWidth } = scrollRef.current;
-            const scrollTo = direction === "left" ? scrollLeft - clientWidth / 1.5 : scrollLeft + clientWidth / 1.5;
-
-            scrollRef.current.scrollTo({
-                left: scrollTo,
-                behavior: "smooth",
-            });
-        }
-    };
+    const activeFeature = features.find((f) => f.id === activeTabId) || features[0];
 
     return (
-        <section className="w-full py-20 px-6 md:px-12 lg:px-24 bg-white overflow-hidden">
+        <section className="w-full py-20 px-6 md:px-12 lg:px-24 bg-[#fafafa] overflow-hidden">
             <div className="max-w-7xl mx-auto">
-
                 {/* Header Section */}
-                <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                <div className="flex flex-col mb-12 text-center md:text-left">
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="text-4xl md:text-5xl font-semibold tracking-tight leading-tight max-w-2xl text-gray-900"
+                        className="text-4xl md:text-5xl font-semibold tracking-tight leading-tight text-gray-900"
                     >
                         Built for hotels <br className="hidden md:block" />
                         that are always evolving
                     </motion.h2>
+                </div>
 
-                    {/* Navigation Arrows */}
-                    <div className="flex items-center gap-3">
-                        <button
-                            onClick={() => scroll("left")}
-                            className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
-                            aria-label="Scroll left"
-                        >
-                            <ArrowLeft className="w-5 h-5 text-gray-700" />
-                        </button>
-                        <button
-                            onClick={() => scroll("right")}
-                            className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
-                            aria-label="Scroll right"
-                        >
-                            <ArrowRight className="w-5 h-5 text-gray-700" />
-                        </button>
+                {/* Main Feature Container */}
+                <div className="bg-white rounded-3xl shadow-sm border border-gray-200 overflow-hidden">
+                    {/* Tabs */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-b border-gray-200">
+                        {features.map((feature, idx) => {
+                            const isActive = activeTabId === feature.id;
+                            const Icon = feature.icon;
+                            return (
+                                <button
+                                    key={feature.id}
+                                    onClick={() => setActiveTabId(feature.id)}
+                                    className={`flex items-center justify-center gap-3 py-6 px-4 text-[15px] font-semibold transition-all border-b-2 outline-none relative hover:bg-gray-50/50 ${isActive
+                                        ? "border-primary-light text-primary-light bg-white z-10"
+                                        : "border-transparent text-gray-600 bg-[#FAFAFA]"
+                                        } ${idx !== features.length - 1 ? 'border-r border-gray-200' : ''}`}
+                                >
+                                    <div className={`p-1.5 rounded-lg transition-colors ${isActive ? 'bg-primary-light/10 text-primary-light' : 'bg-[#F1F5F9] text-gray-400'
+                                        }`}>
+                                        <Icon className="w-5 h-5" />
+                                    </div>
+                                    {feature.tabTitle}
+                                </button>
+                            );
+                        })}
+                    </div>
+
+                    {/* Content Section */}
+                    <div className="p-8 md:p-14 lg:p-20 overflow-hidden">
+                        <div className="flex flex-col lg:flex-row gap-16 items-center">
+
+                            {/* Left side: Text & Button */}
+                            <div className="w-full lg:w-[45%] flex flex-col items-start gap-8">
+                                <AnimatePresence mode="wait">
+                                    <motion.div
+                                        key={activeFeature.id + "-text"}
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, x: -20 }}
+                                        transition={{ duration: 0.3 }}
+                                        className="flex flex-col gap-6"
+                                    >
+                                        <h3 className="text-3xl lg:text-[40px] font-bold text-[#111827] leading-[1.15] tracking-tight">
+                                            {activeFeature.title}
+                                        </h3>
+                                        <p className="text-lg lg:text-[19px] text-gray-600 leading-[1.6]">
+                                            {activeFeature.description}
+                                        </p>
+                                    </motion.div>
+                                </AnimatePresence>
+
+                                <button className="mt-2 px-8 py-3.5 bg-primary-light text-white text-[15px] font-semibold rounded-xl hover:bg-main transition-colors shadow-sm hover:shadow-md">
+                                    Learn more
+                                </button>
+                            </div>
+
+                            {/* Right side: Active Card / Animation */}
+                            <div className="w-full lg:w-[55%] relative">
+                                <AnimatePresence mode="wait">
+                                    <motion.div
+                                        key={activeFeature.id + "-component"}
+                                        initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                                        exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                                        transition={{ duration: 0.4 }}
+                                        className="w-full relative shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-2xl overflow-hidden border border-gray-100 bg-[#FAFAFA]"
+                                    >
+                                        {/* Optional background styling to match the reference's varied backgrounds */}
+                                        <div className="absolute inset-0 bg-gradient-to-br from-primary-light/5 to-primary-light/20 mix-blend-overlay pointer-events-none" />
+
+                                        <div className="relative z-10 w-full min-h-[400px] md:h-[500px] flex items-center justify-center p-4 sm:p-8">
+                                            {activeFeature.customComponent}
+                                        </div>
+                                    </motion.div>
+                                </AnimatePresence>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
-
-                {/* Horizontal Scroll Container */}
-                <div
-                    ref={scrollRef}
-                    className="flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scrollbar-hide"
-                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-                >
-                    {features.map((feature, index) => (
-                        <motion.div
-                            key={feature.id}
-                            initial={{ opacity: 0, x: 50 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                            className="min-w-[300px] md:min-w-[400px] max-w-[400px] snap-start flex flex-col gap-6 group cursor-pointer"
-                        >
-                            {/* Image Card */}
-                            <div className="relative w-full aspect-[4/5] rounded-xl overflow-hidden bg-gray-100">
-                                <Image
-                                    src={feature.image}
-                                    alt={feature.title}
-                                    fill
-                                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                                    sizes="(max-width: 768px) 100vw, 400px"
-                                />
-                                {/* Overlay with subtle tint using the requested accent color */}
-                                <div className="absolute inset-0 bg-[#00283F] opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
-
-                                {/* Center Icon Overlay (Optional touch of design) */}
-                                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                    <div className="bg-white/90 p-4 rounded-full shadow-lg backdrop-blur-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                                        {feature.icon}
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Text Content */}
-                            <div className="flex flex-col gap-2 pr-4">
-                                <p className="text-sm md:text-base text-gray-600 leading-relaxed">
-                                    <strong className="text-gray-900 font-semibold mr-1">
-                                        {feature.title}
-                                    </strong>
-                                    {feature.description}
-                                </p>
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
-
             </div>
         </section>
     );

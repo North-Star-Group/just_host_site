@@ -58,6 +58,7 @@
 
   /* Expose brand tokens as Tailwind utilities (bg-main, text-cream, etc.) */
   --color-main: var(--color-primary);
+  --color-primary-light: var(--color-primary-light);
   --color-sec: var(--color-cream);
   --color-accent: var(--color-accent-blue);
   --color-gold: var(--color-accent-gold);
