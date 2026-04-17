@@ -1,6 +1,5 @@
 'use client';
 
-
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 import { MoreVertical, Calendar, Plus, Minus, Maximize2 } from 'lucide-react';
 
@@ -13,6 +12,13 @@ const regions = {
     southern: ["Spain", "Italy", "Portugal", "Greece", "Croatia", "Slovenia"],
     eastern: ["Poland", "Czechia", "Hungary", "Romania", "Bulgaria", "Slovakia", "Ukraine", "Belarus"],
     northern: ["United Kingdom", "Ireland", "Sweden", "Norway", "Finland", "Denmark"]
+};
+
+type GeographyFeature = {
+    rsmKey: string;
+    properties: {
+        name: string;
+    };
 };
 
 // Assign colors based on the region mapping
@@ -66,8 +72,8 @@ export default function EuropeanMapCard() {
                     style={{ width: "100%", height: "100%" }}
                 >
                     <Geographies geography={geoUrl}>
-                        {({ geographies }) =>
-                            geographies.map((geo) => (
+                        {({ geographies }: { geographies: GeographyFeature[] }) =>
+                            geographies.map((geo: GeographyFeature) => (
                                 <Geography
                                     key={geo.rsmKey}
                                     geography={geo}

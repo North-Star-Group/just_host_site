@@ -11,6 +11,13 @@ import {
     AlertCircle
 } from "lucide-react";
 
+type Task = {
+    id: number;
+    type: "auto" | "suggested" | "escalated";
+    text: string;
+    time: string;
+};
+
 const DECISION_TIERS = [
     {
         id: "auto",
@@ -51,7 +58,7 @@ const DECISION_TIERS = [
 ];
 
 // Simulated real-time task queue
-const TASK_SEQUENCE = [
+const TASK_SEQUENCE: Task[] = [
     { id: 1, type: "auto", text: "Process standard room checkout", time: "0ms" },
     { id: 2, type: "auto", text: "Sync daily OTA commissions", time: "120ms" },
     { id: 3, type: "suggested", text: "Unusual F&B vendor invoice amount", time: "Pending" },
@@ -62,7 +69,7 @@ const TASK_SEQUENCE = [
 
 export default function IntegrationsCard() {
     const [activeTaskIndex, setActiveTaskIndex] = useState(0);
-    const [processedTasks, setProcessedTasks] = useState([]);
+    const [processedTasks, setProcessedTasks] = useState<Task[]>([]);
 
     // Orchestrate the live feed loop
     useEffect(() => {
