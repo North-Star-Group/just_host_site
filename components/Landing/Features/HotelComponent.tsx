@@ -4,193 +4,251 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, ArrowRight, X } from "lucide-react";
 
-// Adjusted coordinates to pin perfectly to the new precise architectural modules
+// Grey architectural paths extracted from original SVG
+const backgroundPaths = [
+    { d: "M300.072 0V201.232V302", color: "#AAAAAA", width: "0.5" },
+    { d: "M200.072 34V150", color: "#AAAAAA", width: "0.5" },
+    { d: "M200.072 281V512", color: "#AAAAAA", width: "0.5" },
+    { d: "M100.072 79.5V180", color: "#AAAAAA", width: "0.5" },
+    { d: "M100.072 280V373", color: "#AAAAAA", width: "0.5" },
+    { d: "M100.072 506V547", color: "#AAAAAA", width: "0.5" },
+    { d: "M400.072 39V276", color: "#AAAAAA", width: "0.5" },
+    { d: "M400.072 375V550", color: "#AAAAAA", width: "0.5" },
+    { d: "M100.072 120L300.072 60L400.072 135", color: "#AAAAAA", width: "0.5" },
+    { d: "M0.0717773 250L100.072 220", color: "#AAAAAA", width: "0.5" },
+    { d: "M129.072 302L230.072 272", color: "#888888", width: "0.75" },
+    { d: "M63.0718 517L179.072 483", color: "#888888", width: "0.75" },
+    { d: "M377.072 383L271.074 308.969", color: "#888888", width: "0.75" },
+    { d: "M377.072 382.5L400.072 377", color: "#888888", width: "0.75" },
+    { d: "M129.072 302L100.072 281", color: "#888888", width: "0.75" },
+    { d: "M63.0718 517L29.0718 497", color: "#888888", width: "0.75" },
+    { d: "M230.572 172L300.072 160L400.072 235", color: "#AAAAAA", width: "0.5" },
+    { d: "M0.0717773 350L30.0718 341", color: "#AAAAAA", width: "0.5" },
+    { d: "M30.0718 341L270.072 272V285.463", color: "#AAAAAA", width: "0.5" },
+    { d: "M0.0717773 450L30.0718 441", color: "#AAAAAA", width: "0.5" },
+    { d: "M179.572 395.5L300.072 360L400.072 435", color: "#AAAAAA", width: "0.5" },
+    { d: "M190.572 162.5L110.072 187L130.072 202L190.072 184", color: "#888888", width: "0.75" },
+    { d: "M200.072 150L230.072 172V272L200.072 250V150Z", color: "#888888", width: "0.75" },
+    { d: "M309.572 216.5L390.072 277L370.072 284L309.572 242V216.5Z", color: "#888888", width: "0.75" },
+    { d: "M300.072 200L270.072 209V309L300.072 300V200Z", color: "#888888", width: "0.75" },
+    { d: "M140.072 373L40.5718 402.5L60.0718 418L140.072 393.5", color: "#888888", width: "0.75" },
+    { d: "M150.072 360L180.072 382V482L150.072 460V360Z", color: "#888888", width: "0.75" },
+    { d: "M300.072 329.5L299.4 464.614L299.4 524.5", color: "#AAAAAA", width: "0.5" }
+];
+
+// Interactive features mapped directly to their SVG coordinates and normal axes
 const features = [
     {
-        id: "layout",
-        title: "Layout Editor",
-        description: "Customize the spatial arrangement of your hotel floor plans effortlessly.",
-        x: "50%",
-        y: "40%",
+        id: "guest-experience",
+        title: "Guest Experience",
+        description: "ARTURO coordinates guest communication, reservations, check-in and check-out automation, upselling, and feedback.",
+
+        cx: 149.5, // Center X of the window
+        cy: 215,   // Center Y of the window
+        popX: -20, // Axis normal (Moves Up/Left)
+        popY: -15,
+        paths: [
+            { d: "M100.072 180L199.072 150V250L100.072 280V180Z", strokeWidth: 2.5, isFill: false },
+            { d: "M110.072 187L190.072 163V243L110.072 267V187Z", strokeWidth: 1.25, isFill: true }
+        ]
     },
     {
-        id: "security",
-        title: "Access Security",
-        description: "Monitor digital key logs and secure restricted areas in real-time.",
-        x: "75%",
-        y: "55%",
+        id: "operations-excellence",
+        title: "Operations Excellence",
+        description: "Housekeeping, maintenance, staff scheduling, and logistics stay synchronized automatically, with human escalation only when needed.",
+
+        cx: 350,
+        cy: 287.5,
+        popX: 20, // Axis normal (Moves Up/Right)
+        popY: -15,
+        paths: [
+            { d: "M300.072 200L400.072 275V375L300.072 300V200Z", strokeWidth: 2.5, isFill: false },
+            { d: "M310.072 217L390.072 277V357L310.072 297V217Z", strokeWidth: 1.25, isFill: true }
+        ]
     },
     {
-        id: "concierge",
-        title: "Concierge Dashboard",
-        description: "Manage guest requests, room service, and bookings from a unified view.",
-        x: "40%",
-        y: "75%",
+        id: "finance-admin",
+        title: "Finance & Admin",
+        description: "Automate invoicing, accounting workflows, expense tracking, and budget forecasting to reduce manual admin work.",
+
+        cx: 90,
+        cy: 428,
+        popX: -20, // Axis normal (Moves Up/Left)
+        popY: -15,
+        paths: [
+            { d: "M30.0718 396L150.072 360V460L30.0718 496V396Z", strokeWidth: 2.5, isFill: false },
+            { d: "M40.0718 403L140.072 373V453L40.0718 483V403Z", strokeWidth: 1.25, isFill: true }
+        ]
     },
 ];
 
-export default function OperationsHero() {
+const proofPoints = [
+    "Built for independent hotels (10-80 rooms)",
+    "Up to 70% less admin workload",
+    "80% automatic • 15% suggested • 5% escalated",
+];
+
+export default function HotelComponent() {
     const [activeFeature, setActiveFeature] = useState<string | null>(null);
 
     return (
-        <section className="min-h-screen w-full bg-white text-black flex items-center justify-center py-20 px-6 md:px-12 lg:px-24 font-sans">
+        <section className="min-h-screen w-full bg-[#fafafa] text-black flex items-center justify-center py-20 px-6 md:px-12 lg:px-24 font-sans overflow-hidden">
             <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
                 {/* Left Column: Text & CTA */}
                 <div className="flex flex-col items-start max-w-lg relative z-20">
+
                     <h1 className="text-5xl md:text-6xl font-medium tracking-tight leading-[1.1] mb-6">
-                        The engine powering your operations
+                        Your hotel runs. Even when you don&apos;t.
                     </h1>
                     <p className="text-lg md:text-xl text-gray-600 mb-10 leading-relaxed">
-                        Our all-in-one platform lets you build intelligent hospitality software with speed, security, and scale—without writing code.
+                        JustHost is an AI-powered operating system for independent hotels. ARTURO orchestrates 19 specialized assistants across guest experience, operations, and administration.
                     </p>
-                    <button className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 transition-colors px-6 py-3 rounded-full text-sm font-medium">
-                        Explore platform <ArrowRight size={16} />
+                    <div className="flex flex-wrap gap-2 mb-10">
+                        {proofPoints.map((point) => (
+                            <span
+                                key={point}
+                                className="rounded-full border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-700"
+                            >
+                                {point}
+                            </span>
+                        ))}
+                    </div>
+                    <button className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 transition-colors px-6 py-3 rounded-full text-sm font-medium group">
+                        Explore ARTURO <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                     </button>
                 </div>
 
-                {/* Right Column: Architectural Wireframe & Interactive Nodes */}
+                {/* Right Column: Interactive 3D Wireframe */}
                 <div className="relative w-full aspect-[4/3] flex items-center justify-center">
+                    <svg
+                        className="w-full h-full drop-shadow-xl"
+                        viewBox="0 0 402 550"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        {/* 1. Base Structure Render (Animated Drawing) */}
+                        <g>
+                            {backgroundPaths.map((path, index) => (
+                                <motion.path
+                                    key={`bg-${index}`}
+                                    d={path.d}
+                                    stroke={path.color}
+                                    strokeWidth={path.width}
+                                    initial={{ pathLength: 0, opacity: 0 }}
+                                    animate={{ pathLength: 1, opacity: 1 }}
+                                    transition={{ duration: 1.5, delay: index * 0.03, ease: "easeInOut" }}
+                                />
+                            ))}
+                        </g>
 
-                    {/* Clean Geometric Perspective Wireframe SVG */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                        <svg
-                            viewBox="0 0 800 600"
-                            className="w-full h-full"
-                            fill="none"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        >
-                            {/* Background / Core structural lines */}
-                            <g
-                                strokeWidth="0.75"
-                                className="stroke-[var(--color-primary-light)]"
-                            >
-                                {/* Vertical pillars */}
-                                <path d="M 550 50 L 550 600" />
-                                <path d="M 450 120 L 450 200" />
-                                <path d="M 450 300 L 450 600" />
-                                <path d="M 350 150 L 350 230" />
-                                <path d="M 350 330 L 350 600" />
-                                <path d="M 650 125 L 650 250" />
-                                <path d="M 650 425 L 650 600" />
+                        {/* 2. Render Animated Window Panes */}
+                        {features.map((feature) => {
+                            const isActive = activeFeature === feature.id;
+                            return (
+                                <motion.g
+                                    key={`window-${feature.id}`}
+                                    initial={{ opacity: 0 }}
+                                    animate={{
+                                        x: isActive ? feature.popX : 0,
+                                        y: isActive ? feature.popY : 0,
+                                        opacity: 1
+                                    }}
+                                    transition={{ type: "spring", stiffness: 120, damping: 15, delay: 0.5 }}
+                                    className="cursor-pointer"
+                                    onClick={() => setActiveFeature(isActive ? null : feature.id)}
+                                >
+                                    {feature.paths.map((p, i) => (
+                                        <motion.path
+                                            key={`path-${feature.id}-${i}`}
+                                            d={p.d}
+                                            stroke="#003A5C"
+                                            strokeWidth={p.strokeWidth}
+                                            fill={p.isFill ? "#003A5C" : "none"}
+                                            animate={{ fillOpacity: isActive && p.isFill ? 0.15 : p.isFill ? 0.04 : 0 }}
+                                            transition={{ duration: 0.3 }}
+                                        />
+                                    ))}
+                                </motion.g>
+                            );
+                        })}
 
-                                {/* Floor plates */}
-                                <path d="M 350 170 L 550 110 L 650 185" />
-                                <path d="M 250 300 L 350 270" />
-                                <path d="M 450 240 L 550 210 L 650 285" />
-                                <path d="M 250 400 L 280 391" />
-                                <path d="M 400 355 L 550 310 L 650 385" />
-                                <path d="M 250 500 L 280 491" />
-                                <path d="M 400 455 L 550 410 L 650 485" />
-                            </g>
+                        {/* 3. Render HTML UI Nodes locked to the exact SVG axes */}
+                        {/* We sort to bring the active node to the front of the SVG rendering stack */}
+                        {features.slice().sort((a, b) => (activeFeature === a.id ? 1 : activeFeature === b.id ? -1 : 0)).map((feature) => {
+                            const isActive = activeFeature === feature.id;
+                            const popoverPlacementClasses = feature.id === "finance-admin"
+                                ? "bottom-full left-0 mb-4"
+                                : "top-full left-1/2 mt-4 -translate-x-1/2";
 
-                            {/* Module 1: Top Left Projection */}
-                            <g className="text-black">
-                                {/* Top & Side Depth Planes */}
-                                <path d="M 350 230 L 450 200 L 480 222 L 380 252 Z" strokeWidth="1" className="text-gray-400" stroke="currentColor" />
-                                <path d="M 450 200 L 480 222 L 480 322 L 450 300 Z" strokeWidth="1" className="text-gray-400" stroke="currentColor" />
-
-                                {/* Bold Front Face */}
-                                <path d="M 350 230 L 450 200 L 450 300 L 350 330 Z" strokeWidth="2" stroke="currentColor" />
-
-                                {/* Clear Window Showcase */}
-                                <path d="M 360 237 L 440 213 L 440 293 L 360 317 Z" strokeWidth="0.5" className="text-gray-500" stroke="currentColor" fill="rgba(0,0,0,0.02)" />
-                                <path d="M 400 225 L 400 305" strokeWidth="0.5" className="text-gray-500" stroke="currentColor" />
-                            </g>
-
-                            {/* Module 2: Right Projection */}
-                            <g className="text-black">
-                                {/* Top & Side Depth Planes */}
-                                <path d="M 550 250 L 650 325 L 620 334 L 520 259 Z" strokeWidth="1" className="text-gray-400" stroke="currentColor" />
-                                <path d="M 550 250 L 520 259 L 520 359 L 550 350 Z" strokeWidth="1" className="text-gray-400" stroke="currentColor" />
-
-                                {/* Bold Front Face */}
-                                <path d="M 550 250 L 650 325 L 650 425 L 550 350 Z" strokeWidth="2" stroke="currentColor" />
-
-                                {/* Clear Window Showcase */}
-                                <path d="M 560 267 L 640 327 L 640 407 L 560 347 Z" strokeWidth="0.5" className="text-gray-500" stroke="currentColor" fill="rgba(0,0,0,0.02)" />
-                                <path d="M 600 297 L 600 377" strokeWidth="0.5" className="text-gray-500" stroke="currentColor" />
-                            </g>
-
-                            {/* Module 3: Bottom Left Projection */}
-                            <g className="text-black">
-                                {/* Top & Side Depth Planes */}
-                                <path d="M 280 446 L 400 410 L 430 432 L 310 468 Z" strokeWidth="1" className="text-gray-400" stroke="currentColor" />
-                                <path d="M 400 410 L 430 432 L 430 532 L 400 510 Z" strokeWidth="1" className="text-gray-400" stroke="currentColor" />
-
-                                {/* Bold Front Face */}
-                                <path d="M 280 446 L 400 410 L 400 510 L 280 546 Z" strokeWidth="2" stroke="currentColor" />
-
-                                {/* Clear Window Showcase */}
-                                <path d="M 290 453 L 390 423 L 390 503 L 290 533 Z" strokeWidth="0.5" className="text-gray-500" stroke="currentColor" fill="rgba(0,0,0,0.02)" />
-                                <path d="M 340 438 L 340 518" strokeWidth="0.5" className="text-gray-500" stroke="currentColor" />
-                            </g>
-                        </svg>
-                    </div>
-
-                    {/* Interactive Nodes */}
-                    {features.map((feature) => {
-                        const isActive = activeFeature === feature.id;
-
-                        return (
-                            <div
-                                key={feature.id}
-                                className="absolute z-10"
-                                style={{ left: feature.x, top: feature.y }}
-                            >
-                                <div className="relative">
-                                    {/* The '+' Node Button */}
-                                    <button
-                                        onClick={() => setActiveFeature(isActive ? null : feature.id)}
-                                        className={`flex items-center gap-2 px-3 py-2 rounded-full border transition-all duration-300 ${isActive
-                                            ? "bg-black text-white border-black shadow-lg"
-                                            : "bg-white/80 backdrop-blur-sm border-gray-200 text-black hover:bg-gray-50"
-                                            }`}
+                            // Making the foreignObject huge (600x600) prevents Safari from clipping dropdown content 
+                            // while maintaining perfect window-centered axes.
+                            return (
+                                <motion.g
+                                    key={`ui-${feature.id}`}
+                                    animate={{ x: isActive ? feature.popX : 0, y: isActive ? feature.popY : 0 }}
+                                    transition={{ type: "spring", stiffness: 120, damping: 15 }}
+                                >
+                                    <foreignObject
+                                        x={feature.cx - 300}
+                                        y={feature.cy - 300}
+                                        width="600"
+                                        height="600"
+                                        className="pointer-events-none"
                                     >
-                                        <motion.div
-                                            animate={{ rotate: isActive ? 45 : 0 }}
-                                            transition={{ duration: 0.2 }}
-                                        >
-                                            <Plus size={16} />
-                                        </motion.div>
-                                        <span className="text-sm font-medium whitespace-nowrap">
-                                            {feature.title}
-                                        </span>
-                                    </button>
+                                        <div className="w-full h-full relative flex items-center justify-center">
 
-                                    {/* Popover Card */}
-                                    <AnimatePresence>
-                                        {isActive && (
-                                            <motion.div
-                                                initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                                                animate={{ opacity: 1, y: 0, scale: 1 }}
-                                                exit={{ opacity: 0, y: 5, scale: 0.95 }}
-                                                transition={{ duration: 0.2, ease: "easeOut" }}
-                                                className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-64 bg-white border border-gray-100 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] rounded-2xl p-5 z-20"
-                                            >
-                                                <div className="flex justify-between items-start mb-2">
-                                                    <h4 className="font-semibold text-sm">{feature.title}</h4>
-                                                    <button
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            setActiveFeature(null);
-                                                        }}
-                                                        className="text-gray-400 hover:text-black transition-colors"
-                                                    >
-                                                        <X size={14} />
-                                                    </button>
-                                                </div>
-                                                <p className="text-xs text-gray-500 leading-relaxed">
-                                                    {feature.description}
-                                                </p>
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
-                                </div>
-                            </div>
-                        );
-                    })}
+                                            {/* Button Marker */}
+                                            <div className="relative pointer-events-auto z-20">
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        setActiveFeature(isActive ? null : feature.id);
+                                                    }}
+                                                    className={`relative z-30 flex h-9 w-9 items-center justify-center rounded-full border border-[var(--color-primary-light)] bg-[var(--color-primary-light)] text-white transition-all duration-300 shadow-md hover:brightness-110 ${isActive ? "scale-105" : ""}`}
+                                                    aria-label={`Toggle ${feature.title}`}
+                                                >
+                                                    <motion.div animate={{ rotate: isActive ? 45 : 0 }} transition={{ duration: 0.2 }}>
+                                                        <Plus size={16} />
+                                                    </motion.div>
+                                                </button>
+
+                                                {/* Popover Detail Card */}
+                                                <AnimatePresence>
+                                                    {isActive && (
+                                                        <motion.div
+                                                            initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                                                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                                                            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                                                            transition={{ duration: 0.2, ease: "easeOut" }}
+                                                            className={`absolute z-40 w-80 cursor-default rounded-2xl border border-gray-100 bg-white p-6 text-left shadow-[0_20px_40px_-15px_rgba(0,0,0,0.15)] ${popoverPlacementClasses}`}
+                                                        >
+                                                            <div className="flex justify-between items-start mb-2">
+                                                                <h4 className="font-semibold text-sm">{feature.title}</h4>
+                                                                <button
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        setActiveFeature(null);
+                                                                    }}
+                                                                    className="text-gray-400 hover:text-black transition-colors"
+                                                                >
+                                                                    <X size={14} />
+                                                                </button>
+                                                            </div>
+                                                            <p className="text-xs text-gray-500 leading-relaxed">
+                                                                {feature.description}
+                                                            </p>
+                                                        </motion.div>
+                                                    )}
+                                                </AnimatePresence>
+                                            </div>
+
+                                        </div>
+                                    </foreignObject>
+                                </motion.g>
+                            );
+                        })}
+                    </svg>
                 </div>
             </div>
         </section>

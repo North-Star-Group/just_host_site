@@ -5,6 +5,8 @@ import AutoFeatureSection from "@/components/Landing/Features/AutoFeatureSection
 import AppBuilderSteps from "@/components/Landing/Features/AppBuilderSteps";
 import FaqSection from "@/components/General/FAQSection";
 import HotelComponent from "@/components/Landing/Features/HotelComponent";
+import JustHostDashboard from "@/components/Landing/Features/JustHostDashboard";
+import SafetyFeature from "@/components/Landing/Features/SafetyFeature";
 
 export default function Home() {
   return (
@@ -15,6 +17,7 @@ export default function Home() {
       <AutoFeatureSection />
       <AppBuilderSteps />
       <HotelComponent/>
+      <SafetyFeature />
 
 
       <FaqSection />
