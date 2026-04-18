@@ -1,11 +1,10 @@
 import HotelFeaturesSection from "@/components/Landing/Features/FeaturesSection";
-import WhatsAppCard from "@/components/Landing/Features/Cards/WhatsappCard";
 import Hero from "@/components/Landing/Hero/Hero";
 import Navbar from "@/components/Layout/Navbar";
-import Image from "next/image";
 import AutoFeatureSection from "@/components/Landing/Features/AutoFeatureSection";
 import AppBuilderSteps from "@/components/Landing/Features/AppBuilderSteps";
 import FaqSection from "@/components/General/FAQSection";
+import HotelComponent from "@/components/Landing/Features/HotelComponent";
 
 export default function Home() {
   return (
@@ -15,7 +14,13 @@ export default function Home() {
       <HotelFeaturesSection />
       <AutoFeatureSection />
       <AppBuilderSteps />
+      <HotelComponent/>
+
+
       <FaqSection />
     </main>
   );
 }
+
+
+

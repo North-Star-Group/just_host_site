@@ -19,7 +19,7 @@ const steps = [
         title: "Train ARTURO on your standards",
         desc: "Define tone of voice, operating policies, and business rules so ARTURO can act like an extension of your team from day one.",
         stickyTop: "top-[28vh]",
-        marginLeft: "ml-8 md:ml-24",
+        marginLeft: "ml-[20px]",
     },
     {
         id: 3,
@@ -27,7 +27,7 @@ const steps = [
         title: "Automate daily hotel operations",
         desc: "ARTURO coordinates guest communication, operations, and finance through automatic, suggested, and escalated decisions with human control.",
         stickyTop: "top-[44vh]",
-        marginLeft: "ml-16 md:ml-48",
+        marginLeft: "ml-[40px]",
     },
 ];
 
@@ -68,7 +68,7 @@ export default function AppBuilderSteps() {
                 </div>
 
                 {/* Ladder Steps Section */}
-                <div className="relative w-full">
+                <div className="relative w-full pb-[44vh]">
                     {/* Subtle background line connecting the steps */}
                     <div className="absolute bottom-0 left-[2.5rem] top-0 hidden w-[2px] bg-gray-200 md:block" />
 
