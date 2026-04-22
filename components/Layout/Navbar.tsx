@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
@@ -103,10 +103,25 @@ const navData = [
 export default function Navbar() {
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => setScrolled(window.scrollY > 10);
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     return (
-        <nav className="fixed top-0 left-0 right-0 z-50 text-black bg-[var(--color-cream)] border-b border-white/10">
-            <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <motion.nav
+            initial={{ y: -80, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className={`fixed top-0 left-0 right-0 z-50 text-black bg-[var(--color-cream)] border-b transition-shadow duration-500 ${scrolled
+                    ? "border-black/10 shadow-[0_4px_30px_rgba(0,0,0,0.12)]"
+                    : "border-white/10 shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
+                }`}
+        >
+            <div className="max-w-7xl mx-auto px-6 lg:px-8 ">
                 <div className="flex items-center justify-between h-20">
 
                     {/* Logo */}
@@ -118,16 +133,16 @@ export default function Navbar() {
 
                     {/* Desktop Navigation - Wrapper handles the mouse leave to prevent flickering */}
                     <div className="hidden lg:flex items-center justify-center h-full" onMouseLeave={() => setHoveredItem(null)}>
-                        <div className="flex space-x-2">
+                        <div className="flex space-x-1">
                             {navData.map((item) => (
                                 <button
                                     key={item.name}
                                     onMouseEnter={() => setHoveredItem(item.name)}
-                                    className="flex items-center gap-2.5 text-sm font-medium transition-colors hover:text-black/70 px-4 py-2 rounded-full focus:outline-none"
+                                    className="relative flex items-center gap-2 text-sm font-medium transition-colors hover:text-black/70 px-4 py-2 rounded-full focus:outline-none group"
                                 >
                                     {item.name}
                                     <svg
-                                        className={`w-3.5 h-3.5 transition-transform duration-200 ${hoveredItem === item.name ? "rotate-180" : ""
+                                        className={`w-3.5 h-3.5 transition-transform duration-300 ${hoveredItem === item.name ? "rotate-180" : ""
                                             }`}
                                         fill="none"
                                         viewBox="0 0 24 24"
@@ -140,6 +155,14 @@ export default function Navbar() {
                                             d="M19 9l-7 7-7-7"
                                         />
                                     </svg>
+                                    {/* Animated underline highlight */}
+                                    <span
+                                        className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] rounded-full bg-[var(--color-primary)] transition-all duration-300 ease-out"
+                                        style={{
+                                            width: hoveredItem === item.name ? "60%" : "0%",
+                                            opacity: hoveredItem === item.name ? 1 : 0,
+                                        }}
+                                    />
                                 </button>
                             ))}
                         </div>
@@ -269,6 +292,6 @@ export default function Navbar() {
                     </motion.div>
                 )}
             </AnimatePresence>
-        </nav>
+        </motion.nav>
     );
 }
