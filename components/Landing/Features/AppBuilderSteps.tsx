@@ -42,7 +42,7 @@ export default function AppBuilderSteps() {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="mb-6 text-5xl font-bold tracking-tight md:text-6xl"
+                        className="text-4xl md:text-5xl font-semibold tracking-tight leading-tight text-gray-900"
                     >
                         Go live with JustHost<br />in 3 simple steps
                     </motion.h1>

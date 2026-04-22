@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageSquare, Smartphone, Zap, Blocks } from "lucide-react";
 import WhatsAppCard from "./Cards/WhatsappCard";
@@ -13,38 +13,56 @@ const features = [
         id: "guest-inbox",
         tabTitle: "Guest Inbox",
         icon: MessageSquare,
-        title: "Unify every guest message in one dashboard.",
+        title: "Unify every guest message in one dashboard",
         description: "ARTURO captures requests from Gmail and WhatsApp, then centralizes conversations so your team can reply faster without channel switching.",
         customComponent: <WhatsAppCard />,
+        duration: 7500,
     },
     {
         id: "operations",
         tabTitle: "Operations",
         icon: Smartphone,
-        title: "Delegate tasks instantly to the right staff.",
+        title: "Delegate tasks instantly to the right staff",
         description: "From housekeeping to maintenance, ARTURO routes work to the right teammate with live timers and clear ownership.",
         customComponent: <OperationsCard />,
+        duration: 7400,
     },
     {
         id: "finance-admin",
         tabTitle: "Finance & Admin",
         icon: Zap,
-        title: "Run finance workflows from invoice to forecast.",
+        title: "Run finance workflows from invoice to forecast",
         description: "Automate invoicing, reconcile accounting data, track vendor expenses, and monitor forward-looking RevPAR performance in one place.",
         customComponent: <FinanceAdminCard />,
+        duration: 19000,
     },
     {
         id: "decision-engine",
         tabTitle: "Decision Engine",
         icon: Blocks,
-        title: "Automate routine decisions with human control.",
+        title: "Automate routine decisions with human control",
         description: "Route each request through automatic, suggested, or escalated paths so routine work is handled instantly and critical cases stay supervised.",
         customComponent: <DecisionEngineCard />,
+        duration: 10000,
     }
 ];
 
 export default function FeaturesSection() {
     const [activeTabId, setActiveTabId] = useState(features[0].id);
+
+    useEffect(() => {
+        const activeFeature = features.find((f) => f.id === activeTabId) || features[0];
+
+        const timeout = setTimeout(() => {
+            setActiveTabId((currentId) => {
+                const currentIndex = features.findIndex((f) => f.id === currentId);
+                const nextIndex = (currentIndex + 1) % features.length;
+                return features[nextIndex].id;
+            });
+        }, activeFeature.duration);
+
+        return () => clearTimeout(timeout);
+    }, [activeTabId]);
 
     const activeFeature = features.find((f) => f.id === activeTabId) || features[0];
 
@@ -92,8 +110,8 @@ export default function FeaturesSection() {
                     </div>
 
                     {/* Content Section */}
-                    <div className="p-8 md:p-14 lg:p-20 overflow-hidden">
-                        <div className="flex flex-col lg:flex-row gap-16 items-center">
+                    <div className="p-4  lg:p-20 overflow-hidden">
+                        <div className="flex flex-col lg:flex-row gap-26 items-center">
 
                             {/* Left side: Text & Button */}
                             <div className="w-full lg:w-[45%] flex flex-col items-start gap-8">
@@ -121,7 +139,7 @@ export default function FeaturesSection() {
                             </div>
 
                             {/* Right side: Active Card / Animation */}
-                            <div className="w-full lg:w-[55%] relative">
+                            <div className="w-full lg:w-[45%] h-[550px]  relative">
                                 <AnimatePresence mode="wait">
                                     <motion.div
                                         key={activeFeature.id + "-component"}
@@ -134,7 +152,7 @@ export default function FeaturesSection() {
                                         {/* Optional background styling to match the reference's varied backgrounds */}
                                         <div className="absolute inset-0 bg-gradient-to-br from-primary-light/5 to-primary-light/20 mix-blend-overlay pointer-events-none" />
 
-                                        <div className="relative z-10 w-full min-h-[400px] md:h-[500px] flex items-center justify-center p-4 sm:p-8">
+                                        <div className="relative z-10 w-full min-h-[400px] md:h-[500px] flex items-center justify-center sm:p-8">
                                             {activeFeature.customComponent}
                                         </div>
                                     </motion.div>

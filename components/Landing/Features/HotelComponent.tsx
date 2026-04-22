@@ -98,10 +98,12 @@ export default function HotelComponent() {
                 {/* Left Column: Text & CTA */}
                 <div className="flex flex-col items-start max-w-lg relative z-20">
 
-                    <h1 className="text-5xl md:text-6xl font-medium tracking-tight leading-[1.1] mb-6">
-                        Your hotel runs. Even when you don&apos;t.
+                    <h1 className="text-4xl md:text-5xl font-semibold tracking-tight leading-tight text-gray-900">
+                        Your hotel runs
+                        <br />
+                        Even when you don&apos;t
                     </h1>
-                    <p className="text-lg md:text-xl text-gray-600 mb-10 leading-relaxed">
+                    <p className="text-lg md:text-xl text-gray-600 mb-10 mt-10 leading-relaxed">
                         JustHost is an AI-powered operating system for independent hotels. ARTURO orchestrates 19 specialized assistants across guest experience, operations, and administration.
                     </p>
                     <div className="flex flex-wrap gap-2 mb-10">

@@ -61,8 +61,8 @@ export default function AutoFeatureSection() {
 
                 {/* Header Section */}
                 <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-                    <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
-                        One operating system <br className="hidden md:block" /> for independent hotels.
+                    <h2 className="text-4xl md:text-5xl font-semibold tracking-tight leading-tight text-neutral-900">
+                        One operating system <br className="hidden md:block" /> for independent hotels
                     </h2>
                     <p className="text-lg text-neutral-500">
                         JustHost, powered by ARTURO, orchestrates guest communication,

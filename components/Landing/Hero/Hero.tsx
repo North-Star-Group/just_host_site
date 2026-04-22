@@ -835,7 +835,7 @@ export default function Hero() {
                     initial={{ opacity: 0, y: -30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="text-4xl md:text-6xl font-extrabold mb-2 text-[var(--color-primary-light)] leading-tight"
+                    className="text-4xl md:text-6xl mb-2 font-inter font-bold text-[var(--color-primary-light)] tracking-light leading-tight"
                 >
                     JustHost an AI-powered <br /> Operating system for {" "}
 
