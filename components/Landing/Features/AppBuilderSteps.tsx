@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
@@ -10,7 +10,7 @@ const steps = [
         time: "Step 1",
         title: "Install and connect your stack",
         desc: "Connect PMS, communication channels, accounting tools, and IoT systems. JustHost goes live without forcing a data migration.",
-        stickyTop: "top-[12vh]",
+        stickyTop: "top-24 md:top-32",
         marginLeft: "ml-0",
     },
     {
@@ -18,16 +18,16 @@ const steps = [
         time: "Step 2",
         title: "Train ARTURO on your standards",
         desc: "Define tone of voice, operating policies, and business rules so ARTURO can act like an extension of your team from day one.",
-        stickyTop: "top-[28vh]",
-        marginLeft: "ml-[20px]",
+        stickyTop: "top-28 md:top-40",
+        marginLeft: "ml-0 md:ml-[40px]",
     },
     {
         id: 3,
         time: "Step 3",
         title: "Automate daily hotel operations",
         desc: "ARTURO coordinates guest communication, operations, and finance through automatic, suggested, and escalated decisions with human control.",
-        stickyTop: "top-[44vh]",
-        marginLeft: "ml-[40px]",
+        stickyTop: "top-32 md:top-48",
+        marginLeft: "ml-0 md:ml-[80px]",
     },
 ];
 
@@ -68,15 +68,14 @@ export default function AppBuilderSteps() {
                 </div>
 
                 {/* Ladder Steps Section */}
-                <div className="relative w-full pb-[44vh]">
+                <div className="relative w-full pb-32 flex flex-col gap-16 md:gap-24">
                     {/* Subtle background line connecting the steps */}
                     <div className="absolute bottom-0 left-[2.5rem] top-0 hidden w-[2px] bg-gray-200 md:block" />
 
                     {steps.map((step, index) => (
                         <div
                             key={step.id}
-                            className={`sticky z-10 ${step.stickyTop} ${step.marginLeft} w-full max-w-md md:max-w-lg ${index === steps.length - 1 ? "mb-0" : "mb-24 md:mb-32"
-                                }`}
+                            className={`sticky z-10 ${step.stickyTop} ${step.marginLeft} w-full max-w-md md:max-w-lg transition-all duration-500`}
                         >
                             {/* Entrance Animation Wrapper */}
                             <motion.div

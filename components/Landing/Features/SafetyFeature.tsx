@@ -8,31 +8,29 @@ import NoVendorCard from './SafetyFeatureCards/NoVendorCard';
 export default function SafetyFeature() {
     return (
         // The background color closely matches the light gray from your reference image
-        <div className="min-h-screen bg-[#fafafa] p-8 md:p-16 flex items-center justify-center">
-            <div className="max-w-[1120px] w-full">
-                {/* 2x2 Grid Layout */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-[#fafafa] px-6 md:px-12 lg:px-24 py-24 relative overflow-visible">
+            <div className="w-full max-w-[1140px] mx-auto flex flex-col gap-16 pb-32">
+                {/* Section Header */}
+                <div className="flex flex-col gap-4 max-w-3xl mx-auto mb-8 justify-center items-center text-center">
+                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-neutral-900 tracking-tight leading-tight text-center">
+                        Built on a foundation of absolute trust
+                    </h2>
+                    <p className="text-xl text-neutral-600 leading-relaxed max-w-2xl mt-2 text-center text-balance">
+                        We prioritize your security, data ownership, and operational reliability above all else. Experience a platform designed from the ground up to meet the highest enterprise standards in the industry.
+                    </p>
+                </div>
 
-                    {/* Top Left */}
-                    <div className="flex justify-center md:justify-end">
-                        <MultiAgentCard />
-                    </div>
-
-                    {/* Top Right */}
-                    <div className="flex justify-center md:justify-start">
-                        <HospitalityCard />
-                    </div>
-
-                    {/* Bottom Left */}
-                    <div className="flex justify-center md:justify-end">
-                        <SwissInfrastructureCard />
-                    </div>
-
-                    {/* Bottom Right */}
-                    <div className="flex justify-center md:justify-start">
-                        <NoVendorCard />
-                    </div>
-
+                <div className="sticky top-24 w-full transition-all duration-500 hover:scale-[1.01]">
+                    <SwissInfrastructureCard />
+                </div>
+                <div className="sticky top-32 w-full transition-all duration-500 hover:scale-[1.01]">
+                    <MultiAgentCard />
+                </div>
+                <div className="sticky top-40 w-full transition-all duration-500 hover:scale-[1.01]">
+                    <HospitalityCard />
+                </div>
+                <div className="sticky top-48 w-full transition-all duration-500 hover:scale-[1.01]">
+                    <NoVendorCard />
                 </div>
             </div>
         </div>

@@ -2,86 +2,59 @@ import React from 'react';
 
 export default function NoVendorCard() {
     return (
-        <div className="w-full max-w-[540px] h-[360px] bg-[#050505] rounded-3xl p-10 shadow-lg border border-neutral-900 flex flex-col relative overflow-hidden">
+        <div className="w-full max-w-[1140px] h-[360px] bg-[#050505] rounded-3xl p-10 shadow-lg border border-neutral-900 flex flex-col relative overflow-hidden mx-auto">
             {/* Text Content */}
-            <div className="relative z-10">
-                <p className="text-xs  font-medium tracking-[0.15em] text-neutral-500 mb-4 uppercase">
-                    Ownership
-                </p>
-                <h2 className="text-xl  text-white mb-4 tracking-tight leading-none">
-                    No Vendor Lock-in
-                </h2>
-                <div className="text-lg text-neutral-300 leading-snug max-w-[85%] space-y-4">
-                    <p>100% full data ownership</p>
-                    <p>Export your data anytime</p>
+            <div className="relative z-10 flex flex-col justify-center h-full max-w-[65%]">
+                <div className="flex flex-col gap-3">
+                    <div className="w-fit px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
+                        <p className="text-xs font-semibold tracking-[0.15em] text-neutral-400 uppercase">
+                            Ownership
+                        </p>
+                    </div>
+                    
+                    <h2 className="text-xl md:text-2xl font-semibold text-white tracking-tight leading-snug">
+                        No Vendor Lock-in
+                    </h2>
+                    
+                    <div className="text-base md:text-lg text-neutral-400 leading-snug space-y-2 mt-1">
+                        <p className="flex items-center gap-3 text-neutral-300">
+                            <span className="w-1 h-1 rounded-full bg-neutral-600 shrink-0" />
+                            100% full data ownership at all times
+                        </p>
+                        <p className="flex items-center gap-3 text-neutral-300">
+                            <span className="w-1 h-1 rounded-full bg-neutral-600 shrink-0" />
+                            Export your data and configurations anytime
+                        </p>
+                        <p className="flex items-center gap-3 text-neutral-300">
+                            <span className="w-1 h-1 rounded-full bg-neutral-600 shrink-0" />
+                            Open standard formats ensure maximum portability
+                        </p>
+                    </div>
                 </div>
             </div>
 
             {/* Custom Isometric SVG Illustration */}
             <div className="absolute -bottom-2 -right-4 w-[280px] h-[220px]">
-                <svg
-                    viewBox="0 0 200 150"
-                    className="w-full h-full"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    {/* Base Grid Plane */}
-                    <path
-                        d="M 100 140 L 10 95 L 100 50 L 190 95 Z"
-                        fill="none"
-                        stroke="#333333"
-                        strokeWidth="0.75"
-                        strokeDasharray="2 2"
-                    />
-                    <path
-                        d="M 55 72.5 L 145 117.5 M 145 72.5 L 55 117.5"
-                        fill="none"
-                        stroke="#333333"
-                        strokeWidth="0.75"
-                        strokeDasharray="2 2"
-                    />
-
-                    {/* Data Lines Escaping (Bottom Left) */}
-                    <g stroke="#fff" strokeWidth="1" fill="none" strokeLinejoin="round">
-                        <path d="M 60 115 L 80 125 L 105 112.5" />
-                        <path d="M 50 110 L 70 120 L 95 107.5" />
-                        <path d="M 40 105 L 60 115 L 85 102.5" />
-                    </g>
-
-                    {/* Key */}
-                    <g transform="translate(65, 105)">
-                        {/* Key Head */}
-                        <path d="M 0 0 L 10 5 L 5 7.5 L -5 2.5 Z" fill="#050505" stroke="#fff" strokeWidth="1" strokeLinejoin="round" />
-                        <path d="M 0 0 L -5 2.5 L -5 -2.5 L 0 -5 Z" fill="#050505" stroke="#fff" strokeWidth="1" strokeLinejoin="round" />
-                        <path d="M 10 5 L 5 7.5 L 5 2.5 L 10 0 Z" fill="#050505" stroke="#fff" strokeWidth="1" strokeLinejoin="round" />
-                        <path d="M 0 -5 L 10 0 L 10 5 L 0 0 Z" fill="#050505" stroke="#fff" strokeWidth="1" strokeLinejoin="round" />
-                        {/* Key Shaft */}
-                        <path d="M 7 3.5 L 25 -5.5 L 22 -7 L 4 2 Z" fill="#050505" stroke="#fff" strokeWidth="1" strokeLinejoin="round" />
-                        {/* Key Teeth */}
-                        <path d="M 18 -2 L 18 2 L 15 3.5 L 15 -0.5 M 22 -4 L 22 0 L 19 1.5 L 19 -2.5" fill="none" stroke="#fff" strokeWidth="1" strokeLinejoin="round" />
-                    </g>
-
-                    {/* Padlock */}
-                    <g transform="translate(130, 85)">
-                        {/* Open Shackle (U-shape) */}
-                        <path d="M -10 -20 L -10 -35 C -10 -45, 10 -45, 10 -35 L 10 -15" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" />
-                        {/* Shackle shadow/depth effect */}
-                        <path d="M -8 -20 L -8 -35 C -8 -42, 8 -42, 8 -35 L 8 -15" fill="none" stroke="#333" strokeWidth="0.5" />
-
-                        {/* Lock Body */}
-                        {/* Top */}
-                        <path d="M 0 -25 L 20 -15 L 0 -5 L -20 -15 Z" fill="#050505" stroke="#fff" strokeWidth="1.2" strokeLinejoin="round" />
-                        {/* Left */}
-                        <path d="M -20 -15 L 0 -5 L 0 15 L -20 5 Z" fill="#050505" stroke="#fff" strokeWidth="1.2" strokeLinejoin="round" />
-                        {/* Right */}
-                        <path d="M 20 -15 L 0 -5 L 0 15 L 20 5 Z" fill="#050505" stroke="#fff" strokeWidth="1.2" strokeLinejoin="round" />
-
-                        {/* Keyhole (Left Face) */}
-                        <g transform="translate(-10, -2)">
-                            <ellipse cx="0" cy="0" rx="3" ry="5" transform="rotate(26)" fill="#fff" />
-                            <path d="M -2 2 L 2 4 L 0 8 L -4 6 Z" fill="#fff" />
-                        </g>
-                    </g>
+                <svg width="311" height="243" viewBox="0 0 311 243" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M113.5 65.7209L0.5 131.221M0.5 131.221L57 164.221M0.5 131.221V151.15C0.5 151.504 0.686797 151.831 0.99127 152.011L55.5 184.221M90.5 184.221L156.004 222.432C156.311 222.611 156.5 222.94 156.5 223.295V240.977C156.5 241.75 155.662 242.23 154.995 241.84L89 203.221" stroke="white" />
+                    <path d="M157 222.721L310.5 133.221M310.5 133.221V151.647C310.5 152.002 310.311 152.331 310.005 152.51L156.5 242.221M310.5 133.221L248 93.7209M248 93.7209L197.5 122.221M248 93.7209L271.5 79.7209M278 63.2209L197.5 109.721M254 65.2209L197.5 97.7209M283 36.2209L197.5 85.2209M177.5 94.7209L196.5 83.2209M177.5 94.7209L114.995 59.0738C114.329 58.6936 113.5 59.175 113.5 59.9425V66.2209V117.15C113.5 117.504 113.687 117.831 113.991 118.011L177 155.221M177.5 94.7209L177 155.221M196.5 83.2209L141.94 50.5823C141.29 50.1934 141.291 49.2511 141.943 48.8643L155.999 40.5184C156.309 40.3345 156.693 40.3313 157.006 40.51L170.5 48.2209M196.5 83.2209V143.15C196.5 143.504 196.313 143.831 196.008 144.011L177 155.221M185 56.7209L215 74.7209" stroke="white" />
+                    <path d="M82.5 149.721L61.9974 162.274C59.4647 163.824 57.7522 166.42 57.3236 169.359L55.1762 184.084C54.7478 187.022 53.0359 189.618 50.504 191.168L14.5 213.221" stroke="white" />
+                    <path d="M101.5 151.721L72.532 169.277C69.9788 170.825 68.2505 173.432 67.8196 176.386L65.683 191.037C65.2507 194.002 63.5118 196.617 60.9449 198.162L13.5 226.721" stroke="white" />
+                    <path d="M113.5 156.721L82.5661 175.281C79.9927 176.825 78.2488 179.443 77.8157 182.413L75.6762 197.084C75.2478 200.022 73.5359 202.618 71.004 204.168L35 226.221" stroke="white" />
+                    <path d="M123.5 163.721L94.7054 180.3C92.0499 181.829 90.2419 184.491 89.7997 187.523L87.6829 202.038C87.2506 205.002 85.5123 207.617 82.9461 209.162L40.5 234.721" stroke="white" />
+                    <path d="M83.5 125.221C84.9245 125.221 86.1937 125.642 87.0947 126.297C87.9962 126.953 88.5 127.816 88.5 128.721C88.5 129.626 87.9962 130.489 87.0947 131.145C86.1937 131.8 84.9245 132.221 83.5 132.221C82.0755 132.221 80.8063 131.8 79.9053 131.145C79.0038 130.489 78.5 129.626 78.5 128.721C78.5 127.816 79.0038 126.953 79.9053 126.297C80.8063 125.642 82.0755 125.221 83.5 125.221Z" stroke="white" />
+                    <path d="M89 120.221C94.444 120.221 99.349 121.601 102.877 123.806C106.412 126.015 108.5 129.004 108.5 132.221C108.5 135.438 106.412 138.427 102.877 140.636C99.349 142.841 94.444 144.221 89 144.221C83.556 144.221 78.651 142.841 75.123 140.636C71.588 138.427 69.5 135.438 69.5 132.221C69.5 129.004 71.588 126.015 75.123 123.806C78.651 121.601 83.556 120.221 89 120.221Z" stroke="white" />
+                    <path d="M69.5 134.221V140.221" stroke="white" />
+                    <path d="M98 143.221C98 148.744 96.5 149.221 84 149.721C75.9919 149.721 69.5 145.244 69.5 139.721" stroke="white" />
+                    <path d="M97 147.721L101.263 151.036C101.417 151.157 101.604 151.229 101.8 151.244L107.739 151.701C107.91 151.714 108.075 151.771 108.217 151.866L114 155.721L123.228 163.006C123.404 163.145 123.622 163.221 123.847 163.221H125.779C126.21 163.221 126.592 163.496 126.728 163.905L126.883 164.37C126.959 164.596 127.113 164.788 127.317 164.911L129.5 166.221L133.257 168.569C133.416 168.668 133.599 168.721 133.787 168.721H143.5C144.052 168.721 144.5 168.273 144.5 167.721V159.794C144.5 159.439 144.312 159.111 144.006 158.931L128 149.541M125.5 125.721L108.406 136.347C107.767 136.744 107.779 137.678 108.428 138.059L117.5 143.381M117.5 143.381L137 131.721M117.5 143.381L128 149.541M128 149.541L147.5 138.221M139 155.721L157.5 144.221" stroke="white" />
+                    <path d="M105 149.221V151.221M98 143.721L101.5 146.721L104.304 148.59C104.433 148.676 104.58 148.731 104.734 148.75L108.266 149.192C108.42 149.211 108.567 149.266 108.696 149.352L112.748 152.053C112.912 152.163 113.105 152.221 113.303 152.221H116C116.552 152.221 117 152.669 117 153.221V154.338C117 154.842 117.376 155.268 117.876 155.33L120.124 155.611C120.624 155.674 121 156.099 121 156.604V157.808C121 158.325 121.394 158.757 121.909 158.804L126.211 159.195C126.4 159.212 126.58 159.282 126.73 159.398L132.75 164.029C132.913 164.154 133.11 164.226 133.315 164.235L140.031 164.541C141.069 164.588 141.481 163.216 140.589 162.683L105.5 141.721" stroke="white" />
+                    <path d="M134 164.221V168.721M130 162.221V166.221M126.5 159.721V163.221M121 158.221V160.721M117 155.221V157.721M113 152.221V154.721M108.5 149.721V151.721" stroke="white" />
+                    <path d="M141 164.221L142.78 164.518M144 164.721L142.78 164.518M142.78 164.518V168.53" stroke="white" />
+                    <path d="M114 58.2209L126 51.7209M184 56.2209L183.186 41.5711C183.062 39.3427 182.728 37.131 182.186 34.9658C181.729 33.1388 181.127 31.3513 180.385 29.6204L177.567 23.0448C176.196 19.8446 174.378 16.8461 172.178 14.1483C169.256 10.5668 165.686 7.55263 161.663 5.27575L159.329 3.95411C156.148 2.15375 152.612 1.06994 148.969 0.778484L146.072 0.546694C143.408 0.333588 140.737 0.852642 138.346 2.04775C137.451 2.49537 136.604 3.0335 135.818 3.65371L134.178 4.94884C129.888 8.33581 127.049 13.2296 126.238 18.6351C126.08 19.6909 126 20.757 126 21.8245V54.7668C126 56.9248 127.078 58.9399 128.874 60.137C129.934 60.8438 131.18 61.2209 132.454 61.2209H133.945C135.271 61.2209 136.553 60.7466 137.56 59.8836C138.791 58.8283 139.5 57.2877 139.5 55.6661V22.4835C139.5 21.6468 139.629 20.8151 139.883 20.0178C141.474 15.0168 147.316 12.8103 151.816 15.5104L156.307 18.2053C157.429 18.8781 158.435 19.7257 159.289 20.7162L161.92 23.7678C167.473 30.2095 170.66 38.3543 170.953 46.8541L171 48.2209V54.7209C171 58.3108 173.91 61.2209 177.5 61.2209H179C181.761 61.2209 184 58.9824 184 56.2209Z" stroke="white" />
+                    <path d="M141.864 92.9068C143.235 92.3568 144.853 92.6478 146.39 93.6722C147.924 94.6952 149.33 96.4246 150.215 98.6289C151.099 100.833 151.278 103.055 150.876 104.855C150.474 106.657 149.506 107.986 148.135 108.536C146.764 109.085 145.147 108.794 143.61 107.77C142.076 106.747 140.67 105.018 139.785 102.813C138.901 100.609 138.722 98.3872 139.124 96.5875C139.526 94.7852 140.494 93.4569 141.864 92.9068Z" stroke="white" />
+                    <path d="M141.5 105.721L141.025 117.127C141.009 117.493 141.195 117.838 141.509 118.027L146.986 121.312C147.652 121.712 148.5 121.232 148.5 120.455V108.221" stroke="white" />
                 </svg>
+
             </div>
         </div>
     );
