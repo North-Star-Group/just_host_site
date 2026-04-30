@@ -10,6 +10,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "JustHost - AI Operating System for Hotels",
   description: "By North Star Group",
+  icons: {
+    icon: "/just_host_icon.svg",
+  },
 };
 
 export default function RootLayout({
