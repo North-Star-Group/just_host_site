@@ -45,7 +45,7 @@
   --color-error: #DC2626;
 
   /* --- Background --- */
-  --background: var(--color-cream);
+
   --foreground: var(--color-text-heading);
 }
 

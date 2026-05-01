@@ -821,7 +821,7 @@ export default function Hero() {
     const springY = useSpring(mouseY, { stiffness: 50, damping: 20 });
 
     return (
-        <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[var(--color-cream)] font-inter">
+        <section className="relative min-h-screen bg-white flex flex-col items-center justify-center overflow-hidden font-inter">
 
             {/* Background */}
             <div

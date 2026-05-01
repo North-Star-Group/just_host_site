@@ -1,10 +1,11 @@
 'use client'
 
+import DeviceShowcase from "./TechnicalFeaturesCards/DeviceShowcase";
+import PDFCard from "./TechnicalFeaturesCards/PDFCard";
 import SocialCard from "./TechnicalFeaturesCards/SocialCard";
-import IntegrationsCard from "./TechnicalFeaturesCards/IntegrationsCard";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -14,51 +15,64 @@ const containerVariants = {
   },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6 },
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
 export default function TechnicalFeatures() {
   return (
-    <section className="w-full py-20 px-4 md:px-8">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
-          Technical Features
-        </h2>
+    <section className="w-full bg-[#F8F9FB] py-16 md:py-24">
+      <div className="max-w-7xl mx-auto ">
+        <div className="flex flex-col mb-12 text-center">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-4xl md:text-5xl font-semibold tracking-tight leading-tight text-gray-900"
+          >
+            Intelligent workflows across <br className="hidden md:block" /> every device and channel
+          </motion.h2>
+        </div>
 
-        {/* Bento Grid Layout - 3 Columns */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[300px]"
+          className="flex flex-col gap-6 lg:gap-8"
         >
-
-          {/* Card 1: 1/3 width (Top Left) */}
-          <motion.div variants={itemVariants} className="md:col-span-1 rounded-2xl overflow-hidden border border-gray-200 dark:border-white/5">
-            <SocialCard />
+          {/* Top Row: Device Showcase (Full Width) */}
+          <motion.div
+            variants={itemVariants}
+            className="w-full rounded-3xl overflow-hidden border border-gray-200 bg-white shadow-sm"
+          >
+            <DeviceShowcase />
           </motion.div>
 
-          {/* Card 2: 2/3 width (Top Right) */}
-          <motion.div variants={itemVariants} className="md:col-span-2 rounded-2xl overflow-hidden border border-gray-200 dark:border-white/5">
-            <IntegrationsCard />
-          </motion.div>
+          {/* Bottom Row: Social Card (40%) and PDF Card (60%) */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8">
+            {/* Social Card */}
+            <motion.div
+              variants={itemVariants}
+              className="lg:col-span-2 rounded-3xl overflow-hidden border border-gray-200 bg-white shadow-sm flex flex-col"
+            >
+              <SocialCard />
+            </motion.div>
 
-          {/* Card 3: 1/3 width (Bottom Left) */}
-          <motion.div variants={itemVariants} className="md:col-span-1 rounded-2xl overflow-hidden border border-gray-200 dark:border-white/5">
-
-          </motion.div>
-
-          {/* Card 4: 2/3 width (Bottom Right) */}
-          <motion.div variants={itemVariants} className="md:col-span-2 rounded-2xl overflow-hidden border border-gray-200 dark:border-white/5">
-          </motion.div>
-
+            {/* PDF Card */}
+            <motion.div
+              variants={itemVariants}
+              className="lg:col-span-3 rounded-3xl overflow-hidden border border-gray-200 bg-white shadow-sm flex flex-col"
+            >
+              <PDFCard />
+            </motion.div>
+          </div>
         </motion.div>
       </div>
     </section>

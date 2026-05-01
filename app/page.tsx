@@ -9,9 +9,8 @@ import HotelComponent from "@/components/Landing/Features/HotelComponent";
 import SafetyFeature from "@/components/Landing/Features/SafetyFeature";
 import Footer from "@/components/Layout/Footer";
 import TechnicalFeatures from "@/components/Landing/Features/TechnicalFeatures";
-import IntegrationsCard from "@/components/Landing/Features/TechnicalFeaturesCards/IntegrationsCard";
-import PDFCard from "@/components/Landing/Features/TechnicalFeaturesCards/PDFCard";
-import DeviceShowcase from "@/components/Landing/Features/TechnicalFeaturesCards/DeviceShowcase";
+
+
 
 export default function Home() {
   return (
@@ -19,9 +18,6 @@ export default function Home() {
       <Navbar />
       <Hero />
       <HotelFeaturesSection />
-      <IntegrationsCard />
-      <PDFCard />
-      <DeviceShowcase />
       <TechnicalFeatures />
       <AutoFeatureSection />
       <AppBuilderSteps />
